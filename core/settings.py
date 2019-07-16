@@ -25,7 +25,7 @@ BASE_DIR = root()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # 加密驗證
-SECRET_KEY = env('SECRET_KEY&')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 模式
@@ -46,6 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+
+    'posts',
+    'categories',
+    'comments',
+    'users',
 ]
 # 中間層(require進來和出去都會經過)
 MIDDLEWARE = [
@@ -83,7 +90,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 # 資料庫設定檔
 DATABASES = {
-    'default': env.db.url()
+    'default': env.db_url()
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -128,3 +135,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 # 靜態檔存放路徑
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'users.User'
+
+# 驗證、權限
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
