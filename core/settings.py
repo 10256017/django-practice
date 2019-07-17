@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'django_extensions', #避免發文者亂填發文人(posts)
     'django_filters', #抓Post_id過濾(comments?post_id=1)
 
