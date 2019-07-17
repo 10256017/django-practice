@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 # import os
 import environ
+
 env = environ.Env()
 env.read_env()
-root = environ.Path(__file__) - 2 #-2表示路徑取到往上兩層
+root = environ.Path(__file__) - 2  # -2表示路徑取到往上兩層
 # 目前位置路徑
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 模式
-DEBUG =  env('DEBUG', default=False)
+DEBUG = env('DEBUG', default=False)
 # DEBUG = True
 
 # 允許哪個網域存取
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_extensions', #避免發文者亂填發文人(posts)
+    'django_filters', #抓Post_id過濾(comments?post_id=1)
 
     'posts',
     'categories',
@@ -85,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 # 資料庫設定檔
@@ -96,7 +98,6 @@ DATABASES = {
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -116,11 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 # 語言
-LANGUAGE_CODE = 'en-us' #zh-hant 中文
+LANGUAGE_CODE = 'en-us'  # zh-hant 中文
 # 時區
 TIME_ZONE = 'Asia/Taipei'
 # 多國語言
@@ -129,7 +129,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -140,10 +139,13 @@ AUTH_USER_MODEL = 'users.User'
 
 # 驗證、權限
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [ #驗證
         'rest_framework.authentication.BasicAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASSES': [ #權限
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS': [ #過濾
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
