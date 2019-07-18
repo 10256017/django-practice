@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_extensions', #避免發文者亂填發文人(posts)
     'django_filters', #抓Post_id過濾(comments?post_id=1)
+    'django_cleanup',
 
     'posts',
     'categories',
@@ -140,7 +141,16 @@ AUTH_USER_MODEL = 'users.User'
 
 # 驗證、權限
 REST_FRAMEWORK = {
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+    # ],
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'djangorestframework_camel_case.parser.CamelCaseFormParser',
+    #     'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+    #     'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ #驗證
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [ #權限
@@ -148,5 +158,17 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [ #過濾
         'django_filters.rest_framework.DjangoFilterBackend'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    # 'JSON_UNDERSCOREIZE': {
+    #     'no_underscore_before_number': True,
+    # },
 }
+
+# email驗證
+EMAIL_URL = env.email_url()
+vars().update(EMAIL_URL)
+
+# 上傳照片
+MEDIA_URL = '/media/'
+MEDIA_ROOT = root('media')
